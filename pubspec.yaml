@@ -1,0 +1,8 @@
+name: entity_component
+version: "0.1.0"
+description: An entity component system framework. 
+author: Harry Stern <harry.stern@rutgers.edu>
+homepage: https://github.com/boustrophedon/entity-component-dart
+environment:
+  sdk: ">=1.2.0"
+
