@@ -2,6 +2,11 @@
 build/
 *packages
 
+# according to https://www.dartlang.org/tools/pub/package-layout.html
+# pubspec.lock is not included if not application package
+# remove this line if your package is an application package
+pubspec.lock
+
 # Or the files created by dart2js.
 *.dart.js
 *.dart.precompiled.js
