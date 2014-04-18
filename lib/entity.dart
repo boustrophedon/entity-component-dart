@@ -3,7 +3,7 @@ part of entity_component;
 class Entity {
 
   World world;
-  Map<Component, Component> components;
+  Map<Type, Component> components;
 
   Entity(World world) {
     this.world = world;

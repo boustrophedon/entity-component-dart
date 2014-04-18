@@ -4,7 +4,7 @@ typedef void EventCallback(Map event);
 
 class World {
   Set<Entity> entities;
-  Map<Component, Set<Entity>> comp_map;
+  Map<Type, Set<Entity>> comp_map;
 
   List<System> systems;
 
@@ -21,7 +21,7 @@ class World {
 
   World() {
     entities = new Set<Entity>();
-    comp_map = new Map<Component, Set<Entity>>();
+    comp_map = new Map<Type, Set<Entity>>();
 
     systems = new List<System>();
 
@@ -45,7 +45,7 @@ class World {
     entities.add(e);
   }
 
-  void register_component(Entity e, Component c) {
+  void register_component(Entity e, Type c) {
     comp_map.putIfAbsent(c, ()=> new Set<Entity>());
     comp_map[c].add(e);
   }
@@ -54,7 +54,7 @@ class World {
     systems.add(syst);
   }
 
-  Set<Entity> gather_entities(Set<Component> wanted) {
+  Set<Entity> gather_entities(Set<Type> wanted) {
     // there should be an easier way to do this, i feel
     Set<Entity> cur;
     Set<Entity> all = comp_map[wanted.first];
