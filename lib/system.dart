@@ -3,7 +3,7 @@ part of entity_component;
 abstract class System {
   World world;
 
-  Set<Component> components_wanted;
+  Set<Type> components_wanted;
   Set<Entity> entities; 
 
   System(World world) {

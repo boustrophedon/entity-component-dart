@@ -83,8 +83,11 @@ class World {
   }
 
   void process_event(Map event) {
-    for (EventCallback callback in event_subs[event['EVENT_TYPE']]) {
-      callback(event);
+    var subs = event_subs[event['EVENT_TYPE']];
+    if (subs != null) {
+      for (EventCallback callback in event_subs[event['EVENT_TYPE']]) {
+        callback(event);
+      }
     }
   }
 
