@@ -108,6 +108,9 @@ class World {
   } 
 
   void run() {
+    for (var s in systems) {
+      s.initialize();
+    }
     clock = new Timer.periodic(refresh_rate, _run);
   }
 }

@@ -10,6 +10,8 @@ abstract class System {
       this.world = world;
   }
 
+  void initialize();
+
   void process() {
     for (Entity e in entities) {
       process_entity(e);
