@@ -67,8 +67,10 @@ class World {
 
   void process_systems() {
     for (var s in systems) {
-      s.entities = gather_entities(s.components_wanted);
-      s.process();
+      if (s.components_wanted != null) {
+        s.entities = gather_entities(s.components_wanted);
+        s.process();
+      }
     }
   }
 
