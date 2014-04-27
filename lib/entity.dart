@@ -18,8 +18,8 @@ class Entity {
     components[c.runtimeType] = c;
   }
 
-  Component get_component(Component c) {
-    return components[c];
+  Component get_component(Type t) {
+    return components[t];
   }
 
   bool has_component(Component c) {
