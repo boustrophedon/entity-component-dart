@@ -13,11 +13,7 @@ class World {
 
   Map<String, Object> globaldata;
 
-  static const Duration refresh_rate = const Duration(milliseconds: 16);
-
   bool stop = false;
-
-  Timer clock;
 
   World() {
     entities = new Set<Entity>();
@@ -99,18 +95,19 @@ class World {
     }
   }
 
-  void _run(Timer t) {
+  void _run(num hiResTimer) {
     process_systems();
     process_events();
     if (this.stop) {
       clock.cancel();
     }
+    window.requestAnimationFrame(_run);
   } 
 
   void run() {
     for (var s in systems) {
       s.initialize();
     }
-    clock = new Timer.periodic(refresh_rate, _run);
+    window.requestAnimationFrame(_run);
   }
 }
