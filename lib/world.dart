@@ -30,15 +30,28 @@ class World {
 
   Entity new_entity() {
     Entity e = new Entity(this);
-
     return e;
   }
 
+  // XXX need to add code for removing an entity from world
   void _add_to_world(Entity e) {
     for (var c in e.components.keys) {
       register_component(e, c);
     }
     entities.add(e);
+    add_to_systems(e);
+  }
+
+  void add_to_systems(Entity e) {
+    for (System s in systems) {
+      if (s.components_wanted == null) {
+        continue;
+      }
+      var comps = new Set.from(e.components.keys);
+      if (comps.containsAll(s.components_wanted)) {
+        s.entities.add(e);
+      }
+    }
   }
 
   void register_component(Entity e, Type c) {
@@ -50,21 +63,9 @@ class World {
     systems.add(syst);
   }
 
-  Set<Entity> gather_entities(Set<Type> wanted) {
-    // there should be an easier way to do this, i feel
-    Set<Entity> cur;
-    Set<Entity> all = comp_map[wanted.first];
-    for (var c in wanted) {
-      cur = comp_map[c];
-      all = all.intersection(cur);
-    }
-    return all;
-  }
-
   void process_systems() {
     for (var s in systems) {
-      if (s.components_wanted != null) {
-        s.entities = gather_entities(s.components_wanted);
+      if (s.entities.isNotEmpty) {
         s.process();
       }
     }
@@ -98,10 +99,9 @@ class World {
   void _run(num hiResTimer) {
     process_systems();
     process_events();
-    if (this.stop) {
-      clock.cancel();
+    if (!this.stop) {
+      window.requestAnimationFrame(_run);
     }
-    window.requestAnimationFrame(_run);
   } 
 
   void run() {

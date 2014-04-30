@@ -8,6 +8,8 @@ abstract class System {
 
   System(World world) {
       this.world = world;
+      components_wanted = new Set<Type>();
+      entities = new Set<Entity>();
   }
 
   void initialize();
