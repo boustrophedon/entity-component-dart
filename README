@@ -1,1 +1,18 @@
 This is an entity component system framework for writing games. It is written in dart because it is for writing stuff in the browser. I didn't really like how Java-y the dart port of Artemis is, so I decided to write my own. There is another one written in dart, but it isn't exactly what I have in mind for an ecs. Maybe their way is better, but in particular I prefer entities to be actual objects rather than ints. This probably makes things harder in some ways (networked games come to mind), but it is conceptually simpler. If it turns out to be slow I'll rewrite it.
+
+Genenerally you use it like this:
+World world = new World();
+world.register_system(new WhateverSystem(world));
+// ... more register_system calls
+world.globaldata['something'] = data // eg canvas element
+// this part is not as well-thought-out as i'd like
+
+and then you do world.run()
+
+the systems run in the order they are registered.
+
+in your WhateverSystems that you've implemented and imported, you subscribe for events and stuff inside System.initialize() rather than the constructor because the world object might not be set up, or you might need to use some global data that's not available until after other systems have initialized. 
+
+entities are then created by the systems, and they get passed to the systems based on which components they want to look at.
+
+There is a bad example of a drawing app using canvas in example/draw, and I'll add example systems to the example/example_systems directory.
