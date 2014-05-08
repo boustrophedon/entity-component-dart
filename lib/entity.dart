@@ -22,8 +22,8 @@ class Entity {
     return components[t];
   }
 
-  bool has_component(Component c) {
-    if (components.containsKey(c)) {
+  bool has_component(Type t) {
+    if (components.containsKey(t)) {
       return true;
     } else {
       return false;
