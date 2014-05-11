@@ -50,6 +50,7 @@ class World {
       var comps = new Set.from(e.components.keys);
       if (comps.containsAll(s.components_wanted)) {
         s.entities.add(e);
+        s.new_entities.add(e);
       }
     }
   }
@@ -61,14 +62,6 @@ class World {
 
   void register_system(System syst) {
     systems.add(syst);
-  }
-
-  void process_systems() {
-    for (var s in systems) {
-      if (s.entities.isNotEmpty) {
-        s.process();
-      }
-    }
   }
 
   void subscribe_event(String event_type, EventCallback callback) {
@@ -86,6 +79,18 @@ class World {
     if (subs != null) {
       for (EventCallback callback in event_subs[event['EVENT_TYPE']]) {
         callback(event);
+      }
+    }
+  }
+
+  void process_systems() {
+    for (var s in systems) {
+      if (s.new_entities.isNotEmpty) {
+        s.process_new();
+        s.new_entities.clear();
+      }
+      if (s.entities.isNotEmpty) {
+        s.process();
       }
     }
   }
