@@ -11,7 +11,7 @@ class World {
   EventQueue events;
   Map<String, Set<EventCallback>> event_subs;
 
-  Map<String, Object> globaldata;
+  Map<String, dynamic> globaldata;
 
   bool stop = false;
 

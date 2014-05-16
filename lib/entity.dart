@@ -18,7 +18,7 @@ class Entity {
     components[c.runtimeType] = c;
   }
 
-  Component get_component(Type t) {
+  dynamic get_component(Type t) {
     return components[t];
   }
 
