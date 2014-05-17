@@ -4,6 +4,7 @@ typedef void EventCallback(Map event);
 
 class World {
   Set<Entity> entities;
+  Set<Entity> removed_entities;
   Map<Type, Set<Entity>> comp_map;
 
   List<System> systems;
@@ -17,6 +18,8 @@ class World {
 
   World() {
     entities = new Set<Entity>();
+    removed_entities = new Set<Entity>();
+
     comp_map = new Map<Type, Set<Entity>>();
 
     systems = new List<System>();
@@ -60,6 +63,18 @@ class World {
     comp_map[c].add(e);
   }
 
+  void deregister_component(Entity e, Type c) {
+    comp_map[c].remove(e);
+  }
+
+  void remove_entity(Entity e) {
+    entities.remove(e);
+    for (var c in e.components.keys) {
+      deregister_component(e, c);
+    }
+    removed_entities.add(e);
+  }
+
   void register_system(System syst) {
     systems.add(syst);
   }
@@ -101,9 +116,19 @@ class World {
     }
   }
 
+  void remove_entities() {
+    for (System s in systems) {
+      s.remove_entities(removed_entities);
+    }
+    if (removed_entities.isNotEmpty) {
+      removed_entities.clear();
+    }
+  }
+
   void _run(num hiResTimer) {
     process_systems();
     process_events();
+    remove_entities();
     if (!this.stop) {
       window.requestAnimationFrame(_run);
     }

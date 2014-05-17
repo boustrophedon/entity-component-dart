@@ -29,7 +29,21 @@ abstract class System {
     }
   }
 
+  void remove_entities(Set<Entity> removed_entities) {
+    for (Entity e in removed_entities) {
+      remove_entity(e);
+    }
+    entities.removeAll(removed_entities);
+    new_entities.removeAll(removed_entities); 
+    // i think removing from new_entities is in fact necessary
+    // but I'm having a little bit of a difficult time figuring out exactly when it would happen
+    // because it's like 5am and I shouldn't be writing code
+    // so i am being safe
+  }
+
   void process_entity(Entity e);
 
   void process_new_entity(Entity e) {}
+
+  void remove_entity(Entity e);
 }
