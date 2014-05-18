@@ -119,6 +119,7 @@ class World {
   void remove_entities() {
     for (System s in systems) {
       s.remove_entities(removed_entities);
+      s.entities.removeAll(removed_entities);
     }
     if (removed_entities.isNotEmpty) {
       removed_entities.clear();
