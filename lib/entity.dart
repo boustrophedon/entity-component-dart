@@ -5,8 +5,11 @@ class Entity {
   World world;
   Map<Type, Component> components;
 
-  Entity(World world) {
+  int id;
+
+  Entity(World world, int id) {
     this.world = world;
+    this.id = id;
     components = new Map();
   }
 

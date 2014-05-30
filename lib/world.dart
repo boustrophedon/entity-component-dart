@@ -7,6 +7,8 @@ class World {
   Set<Entity> removed_entities;
   Map<Type, Set<Entity>> comp_map;
 
+  int cur_id = 0;
+
   List<System> systems;
 
   EventQueue events;
@@ -32,11 +34,17 @@ class World {
   }
 
   Entity new_entity() {
-    Entity e = new Entity(this);
+    Entity e = new Entity(this, new_entity_id());
     return e;
   }
+  
+  int new_entity_id() {
+    // XXX this is simple for now, can probably be optimized in some way
+    // also probably needs to be different depending on whether running on client or server
+    cur_id+=1;
+    return cur_id;
+  }
 
-  // XXX need to add code for removing an entity from world
   void _add_to_world(Entity e) {
     for (var c in e.components.keys) {
       register_component(e, c);
