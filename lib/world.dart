@@ -8,6 +8,7 @@ class World {
   Map<Type, Set<Entity>> comp_map;
 
   num time = 0;
+  num dt = 0;
 
   int cur_id = 0;
 
@@ -137,6 +138,7 @@ class World {
   }
 
   void _run(num timestamp) {
+    this.dt = timestamp - this.time;
     this.time = timestamp;
     process_systems();
     process_events();
