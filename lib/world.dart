@@ -7,7 +7,7 @@ class World {
   Set<Entity> removed_entities;
   Map<Type, Set<Entity>> comp_map;
 
-  num dt = 0;
+  num time = 0;
 
   int cur_id = 0;
 
@@ -136,8 +136,8 @@ class World {
     }
   }
 
-  void _run(num dt) {
-    this.dt = dt;
+  void _run(num timestamp) {
+    this.time = timestamp;
     process_systems();
     process_events();
     remove_entities();
