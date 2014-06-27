@@ -7,6 +7,8 @@ class World {
   Set<Entity> removed_entities;
   Map<Type, Set<Entity>> comp_map;
 
+  num dt = 0;
+
   int cur_id = 0;
 
   List<System> systems;
@@ -134,7 +136,8 @@ class World {
     }
   }
 
-  void _run(num hiResTimer) {
+  void _run(num dt) {
+    this.dt = dt;
     process_systems();
     process_events();
     remove_entities();
