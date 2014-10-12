@@ -7,6 +7,7 @@ class ClientWorld extends World {
     this.dt = timestamp - this.time;
     this.time = timestamp;
     this.run();
+    do_frame();
   }
   void do_frame() {
     if (!this.stop) {
