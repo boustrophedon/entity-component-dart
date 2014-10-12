@@ -1,0 +1,10 @@
+name: ecs_server_test
+version: "0.1.0"
+description: ecs example serverworld useage
+author: Harry Stern <harry.stern@rutgers.edu>
+homepage: https://github.com/boustrophedon/entity-component-dart
+environment:
+  sdk: ">=1.2.0"
+dependencies:
+  entity_component:
+    path: /home/hcs/code/dartlang/entity-component-dart/

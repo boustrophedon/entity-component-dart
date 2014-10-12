@@ -1,4 +1,4 @@
-part of entity_component;
+part of entity_component_common;
 
 abstract class System {
   World world;

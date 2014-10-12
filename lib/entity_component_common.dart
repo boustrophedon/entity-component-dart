@@ -1,5 +1,4 @@
-library entity_component;
-import 'dart:html';
+library entity_component_common;
 import 'dart:collection';
 part 'event_queue.dart';
 part 'world.dart';

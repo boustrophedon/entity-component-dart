@@ -1,4 +1,4 @@
-part of entity_component;
+part of entity_component_common;
 
 typedef void EventCallback(Map event);
 
@@ -137,21 +137,19 @@ class World {
     }
   }
 
-  void _run(num timestamp) {
-    this.dt = timestamp - this.time;
-    this.time = timestamp;
+  void run() {
     process_systems();
     process_events();
     remove_entities();
-    if (!this.stop) {
-      window.requestAnimationFrame(_run);
-    }
   } 
 
-  void run() {
+  void start() {
     for (var s in systems) {
       s.initialize();
     }
-    window.requestAnimationFrame(_run);
+    do_frame();
   }
+
+  void do_frame() {}
+
 }
