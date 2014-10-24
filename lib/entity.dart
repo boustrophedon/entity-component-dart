@@ -33,4 +33,8 @@ class Entity {
     }
   }
 
+  int toJson() {
+    return id;
+  }
+
 }

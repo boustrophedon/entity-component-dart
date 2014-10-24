@@ -36,9 +36,15 @@ class World {
 
   }
 
-  Entity new_entity() {
-    Entity e = new Entity(this, new_entity_id());
-    return e;
+  Entity new_entity([int id]) {
+    if (id != null) {
+      Entity e = new Entity(this, id);
+      return e;
+    }
+    else {
+      Entity e = new Entity(this, new_entity_id());
+      return e;
+    }
   }
   
   int new_entity_id() {
