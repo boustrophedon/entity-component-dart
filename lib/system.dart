@@ -1,36 +1,37 @@
 part of entity_component_common;
 
-abstract class System {
+class System {
   World world;
 
   Set<Type> components_wanted;
-  Set<Entity> entities; 
+  Set<int> entities; 
 
-  Set<Entity> new_entities;
+  Set<int> new_entities;
 
   System(World world) {
       this.world = world;
       components_wanted = new Set<Type>();
-      entities = new Set<Entity>();
-      new_entities = new Set<Entity>();
+      entities = new Set<int>();
+      new_entities = new Set<int>();
   }
 
-  void initialize();
+  void initialize() {}
 
   void process() {
-    for (Entity e in entities) {
+    for (int e in entities) {
       process_entity(e);
     }
   }
 
   void process_new() {
-    for (Entity e in entities) {
+    for (int e in new_entities) {
       process_new_entity(e);
     }
+    new_entities.clear();
   }
 
-  void remove_entities(Set<Entity> removed_entities) {
-    for (Entity e in removed_entities) {
+  void remove_entities(Set<int> removed_entities) {
+    for (int e in removed_entities) {
       remove_entity(e);
     }
     entities.removeAll(removed_entities);
@@ -41,9 +42,9 @@ abstract class System {
     // so i am being safe
   }
 
-  void process_entity(Entity e);
+  void process_entity(int e) {}
 
-  void process_new_entity(Entity e) {}
+  void process_new_entity(int e) {}
 
-  void remove_entity(Entity e);
+  void remove_entity(int e) {}
 }

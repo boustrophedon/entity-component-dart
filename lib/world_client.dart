@@ -1,7 +1,8 @@
 part of entity_component_client;
 
 class ClientWorld extends World {
-  ClientWorld() : super() {}
+  int cur_id = 1;
+  ClientWorld(List<Type> component_types) : super(component_types) {}
 
   void update_timestamp_and_run(num timestamp) {
     this.dt = timestamp - this.time;

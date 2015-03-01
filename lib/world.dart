@@ -3,71 +3,69 @@ part of entity_component_common;
 typedef void EventCallback(Map event);
 
 class World {
-  Set<Entity> entities;
-  Set<Entity> removed_entities;
-  Map<Type, Set<Entity>> comp_map;
+  Map<int, Set<Type>> entities;
+  Set<int> removed_entities;
+  Map<Type, ComponentMapper> component_mappers;
+  List<System> systems;
 
   num time = 0;
   num dt = 0;
 
   int cur_id = 0;
 
-  List<System> systems;
-
   EventQueue events;
   Map<String, Set<EventCallback>> event_subs;
 
   Map<String, dynamic> globaldata;
 
+  Map<String, int> tagged_entities;
+
   bool stop = false;
 
-  World() {
-    entities = new Set<Entity>();
-    removed_entities = new Set<Entity>();
+  World(List<Type> component_types) {
+    entities = new Map<int, Set<Type>>();
+    removed_entities = new Set<int>();
 
-    comp_map = new Map<Type, Set<Entity>>();
-
+    component_mappers = new Map<Type, ComponentMapper>();
+    for (Type t in component_types) {
+      component_mappers[t] = new ComponentMapper();
+    }
     systems = new List<System>();
 
     events = new EventQueue();
     event_subs = new Map<String, Set<EventCallback>>();
 
-    globaldata = new Map<String, Object>();
+    // not really a difference here
+    globaldata = new Map<String, dynamic>();
+    tagged_entities = new Map<String, int>();
 
   }
 
-  Entity new_entity([int id]) {
-    if (id != null) {
-      Entity e = new Entity(this, id);
-      return e;
-    }
-    else {
-      Entity e = new Entity(this, new_entity_id());
-      return e;
-    }
+  int new_entity() {
+    return new_entity_id();
   }
   
   int new_entity_id() {
     // XXX this is simple for now, can probably be optimized in some way
-    // also probably needs to be different depending on whether running on client or server
-    cur_id+=1;
+    cur_id+=2;
     return cur_id;
   }
 
-  void _add_to_world(Entity e) {
-    for (var c in e.components.keys) {
-      register_component(e, c);
-    }
-    entities.add(e);
+  void add_component(int e, Component c) {
+    entities.putIfAbsent(e, ()=>(new Set<Type>())).add(c.runtimeType);
+    component_mappers[c.runtimeType].add_component(e, c);
+  }
+
+  void add_to_world(int e) {
     add_to_systems(e);
   }
 
-  void add_to_systems(Entity e) {
+  void add_to_systems(int e) {
     for (System s in systems) {
       if (s.components_wanted == null) {
         continue;
       }
-      var comps = new Set.from(e.components.keys);
+      var comps = entities[e];
       if (comps.containsAll(s.components_wanted)) {
         s.entities.add(e);
         s.new_entities.add(e);
@@ -75,20 +73,7 @@ class World {
     }
   }
 
-  void register_component(Entity e, Type c) {
-    comp_map.putIfAbsent(c, ()=> new Set<Entity>());
-    comp_map[c].add(e);
-  }
-
-  void deregister_component(Entity e, Type c) {
-    comp_map[c].remove(e);
-  }
-
-  void remove_entity(Entity e) {
-    entities.remove(e);
-    for (var c in e.components.keys) {
-      deregister_component(e, c);
-    }
+  void remove_entity(int e) {
     removed_entities.add(e);
   }
 
@@ -121,9 +106,7 @@ class World {
         s.process_new();
         s.new_entities.clear();
       }
-      if (s.entities.isNotEmpty) {
-        s.process();
-      }
+      s.process();
     }
   }
 
@@ -137,6 +120,11 @@ class World {
     for (System s in systems) {
       s.remove_entities(removed_entities);
       s.entities.removeAll(removed_entities);
+    }
+    for (int e in removed_entities) {
+      for (Type c in entities[e]) {
+        component_mappers[c].remove(e);
+      }
     }
     if (removed_entities.isNotEmpty) {
       removed_entities.clear();
