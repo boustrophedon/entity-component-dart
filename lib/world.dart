@@ -16,8 +16,6 @@ class World {
   EventQueue events;
   Map<String, Set<EventCallback>> event_subs;
 
-  Map<String, dynamic> globaldata;
-
   Map<String, int> tagged_entities;
 
   bool stop = false;
@@ -35,8 +33,6 @@ class World {
     events = new EventQueue();
     event_subs = new Map<String, Set<EventCallback>>();
 
-    // not really a difference here
-    globaldata = new Map<String, dynamic>();
     tagged_entities = new Map<String, int>();
 
   }

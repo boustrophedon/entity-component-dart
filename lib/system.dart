@@ -1,7 +1,10 @@
 part of entity_component_common;
 
 class System {
-  World world;
+  var world; // var and not World because otherwise dartanalyzer complains that World doesn't have setters/getters for subclasses' data
+  // eg I make a ClientWorldSubclass subclass with an int client_id and dartanalyzer complains World doesn't have a client_id setter
+  // the proper way to fix this is to do System<T> and then define my classes like class System<ClientWorldSubclass> {
+  // but that's a bit silly
 
   Set<Type> components_wanted;
   Set<int> entities; 
