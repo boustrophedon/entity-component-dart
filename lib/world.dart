@@ -81,7 +81,13 @@ class World {
     event_subs.putIfAbsent(event_type, ()=>new Set<EventCallback>());
     event_subs[event_type].add(callback);
   }
-    
+  
+  void unsubscribe_event(String event_type, EventCallback callback) {
+    if (event_subs[event_type] != null) {
+      event_subs[event_type].remove(callback);
+    }
+  }
+
   void send_event(String event_type, Map event) {
     event['EVENT_TYPE'] = event_type;
     events.add(event);
