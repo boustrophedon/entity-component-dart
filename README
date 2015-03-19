@@ -1,11 +1,14 @@
 This is an entity component system framework for writing games. It is written in dart because it is for writing stuff in the browser. I recently did some rewriting and now it uses component mappers and stuff like Artemis, and the entities themselves are now simply ints, so they can be easily transmitted across a websocket. There's now a ClientWorld and a ServerWorld class that I may end up merging again.
 
+todo: I think I want to change the messaging system to subclass an Event class rather than using generic Maps, and have components require a toJson() method. They should also have id numbers so that I can do something like update arbitrary components of entities via a message over the network, rather than doing it ad hoc.
+
 Genenerally you use it like this:
-World world = new World();
+Create a subclass of ServerWorld or ClientWorld depending on whether it will run on the server or client side, and add fields for your global data pieces.
+
+ClientWorld w = new MyClientWorld(); //or whatever
 world.register_system(new WhateverSystem(world));
 // ... more register_system calls
-world.globaldata['something'] = data // eg canvas element
-// this part is not as well-thought-out as i'd like
+world.canvas = queryElement("#canvas-area") // or whatever
 
 and then you do world.run()
 
