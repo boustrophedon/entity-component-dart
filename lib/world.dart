@@ -5,7 +5,7 @@ typedef void EventCallback(Map event);
 class World {
   Map<int, Set<Type>> entities;
   Set<int> removed_entities;
-  Map<Type, ComponentMapper> component_mappers;
+  Map<Type, ComponentMapper<Component>> component_mappers;
   List<System> systems;
 
   num time = 0;
@@ -24,7 +24,7 @@ class World {
     entities = new Map<int, Set<Type>>();
     removed_entities = new Set<int>();
 
-    component_mappers = new Map<Type, ComponentMapper>();
+    component_mappers = Map();
     for (Type t in component_types) {
       component_mappers[t] = new ComponentMapper();
     }
@@ -88,7 +88,7 @@ class World {
     }
   }
 
-  void send_event(String event_type, Map event) {
+  void send_event(String event_type, Map<Object, Object> event) {
     event['EVENT_TYPE'] = event_type;
     events.add(event);
   }

@@ -3,7 +3,8 @@ version: "0.6.0"
 description: An entity component system framework. 
 author: Harry Stern <harry.stern@rutgers.edu>
 homepage: https://github.com/boustrophedon/entity-component-dart
-dependencies:
-  browser: any
 environment:
-  sdk: ">=1.8.0"
+    sdk: '>=2.0.0 <3.0.0'
+dev_dependencies:
+    build_runner: ^1.1.2
+    build_web_compilers: ^1.0.0
